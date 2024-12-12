@@ -106,7 +106,7 @@ public class LeaveRequestController {
                 .upload(file.getInputStream(), file.getSize(), true);
 
         // Return the file URL
-        return String.format("https://<your-storage-account>.blob.core.windows.net/%s/%s", azureContainerName, uniqueFileName);
+        return String.format("https://vamsiaccount.blob.core.windows.net/%s/%s", azureContainerName, uniqueFileName);
     }
 
     // Approving a leave request
