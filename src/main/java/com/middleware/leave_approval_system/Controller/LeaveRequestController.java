@@ -32,7 +32,7 @@ public class LeaveRequestController {
     @Value("${azure.storage.container-name}")
     private String azureContainerName;
 
-    @PostMapping("/submit")
+    @PostMapping(value = "/submit", produces = "application/json")
     public ResponseEntity<?> submitLeaveRequest(
             @RequestParam("employeeId") String employeeId,
             @RequestParam("firstName") String firstName,
@@ -110,26 +110,26 @@ public class LeaveRequestController {
     }
 
     // Approving a leave request
-    @PutMapping("/approve/{id}")
+    @PutMapping(value = "/approve/{id}", produces = "application/json")
     public ResponseEntity<String> approveLeaveRequest(@PathVariable Long id) {
         leaveRequestServiceImpl.approveLeaveRequest(id);
         return ResponseEntity.ok("Leave Request Approved");
     }
 
     // Rejecting a leave request
-    @PutMapping("/reject/{id}/{leaveReason}")
+    @PutMapping(value = "/reject/{id}/{leaveReason}", produces = "application/json")
     public ResponseEntity<String> rejectLeaveRequest(@PathVariable Long id, @PathVariable String leaveReason) {
         leaveRequestServiceImpl.rejectLeaveRequest(id, leaveReason);
         return ResponseEntity.ok("Leave Request Rejected with Reason: " + leaveReason);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping(value = "/update/{id}", produces = "application/json")
     public ResponseEntity<LeaveRequest> updateLeaveRequest(@PathVariable Long id, @RequestBody LeaveRequest leaveRequest) {
         LeaveRequest updatedLeaveRequest = leaveRequestServiceImpl.updateLeaveRequest(id, leaveRequest);
         return ResponseEntity.ok(updatedLeaveRequest);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping(value = "/delete/{id}", produces = "application/json")
     public ResponseEntity<String> deleteLeaveRequest(@PathVariable Long id) {
         String deleteRequest = leaveRequestServiceImpl.deleteLeaveRequest(id);
         return ResponseEntity.ok(deleteRequest);
@@ -144,7 +144,7 @@ public class LeaveRequestController {
         return new ResponseEntity<>(leaveRequest, HttpStatus.OK);
     }
 
-    @GetMapping("/{status}/manager/{managerId}")
+    @GetMapping(value = "/{status}/manager/{managerId}", produces = "application/json")
     public ResponseEntity<List<LeaveRequest>> getLeaveRequestsByStatus(@PathVariable String status, @PathVariable String managerId) {
         LeaveRequest.LeaveStatus leaveStatus;
         try {
@@ -159,7 +159,7 @@ public class LeaveRequestController {
         return ResponseEntity.ok(leaveRequests);
     }
 
-    @GetMapping("/pending/employee/{employeeId}")
+    @GetMapping(value = "/pending/employee/{employeeId}", produces = "application/json")
     public ResponseEntity<List<LeaveRequest>> getAllPendingLeaveRequestsEmployees(@PathVariable String employeeId) {
         List<LeaveRequest> pendingRequests = leaveRequestServiceImpl.getAllPendingLeaveRequestsEmployee(employeeId);
         if (pendingRequests.isEmpty()) {
@@ -177,7 +177,7 @@ public class LeaveRequestController {
         return new ResponseEntity<>(approveRequests, HttpStatus.OK);
     }
 
-    @GetMapping("/reject/employee/{employeeId}")
+    @GetMapping(value = "/reject/employee/{employeeId}", produces = "application/json")
     public ResponseEntity<List<LeaveRequest>> getAllRejectedLeaveRequestsEmployee(@PathVariable String employeeId) {
         List<LeaveRequest> rejectRequests = leaveRequestServiceImpl.getAllRejectedLeaveRequestsEmployee(employeeId);
         if (rejectRequests.isEmpty()) {
@@ -186,7 +186,7 @@ public class LeaveRequestController {
         return new ResponseEntity<>(rejectRequests, HttpStatus.OK);
     }
 
-    @GetMapping("/manager/{managerId}")
+    @GetMapping(value = "/manager/{managerId}", produces = "application/json")
     public ResponseEntity<List<LeaveRequest>> getAllMangerIds(@PathVariable String managerId) {
         List<LeaveRequest> leaveRequest = leaveRequestServiceImpl.getAllManagerId(managerId);
         if (leaveRequest.isEmpty()) {
@@ -195,7 +195,7 @@ public class LeaveRequestController {
         return new ResponseEntity<>(leaveRequest, HttpStatus.OK);
     }
 
-    @GetMapping("/employee/{employeeId}")
+    @GetMapping(value = "/employee/{employeeId}", produces = "application/json")
     public ResponseEntity<List<LeaveRequest>> getAllEmployeeIds(@PathVariable String employeeId) {
         List<LeaveRequest> leaveRequest = leaveRequestServiceImpl.getAllEmployeeId(employeeId);
         return ResponseEntity.ok(leaveRequest);
